@@ -1,60 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IA.CC</title>
+    <title>Classificador de Imagens</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            max-width: 300px;
+        }
+        label, input, button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+        }
+    </style>
 </head>
 <body>
-    <h1>IA de Imagens</h1>
-    <input type="file" id="inputImage" accept="image/*">
-    <button onclick="processarImagem()">Processar Imagem</button>
-    <div id="output"></div>
+    <h1>Classificador de Imagens</h1>
+    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+        <label for="file">Escolha uma imagem:</label><br>
+        <input type="file" id="file" name="file" accept="image/*" required><br>
+        <button type="submit">Postar</button>
+    </form>
+    <div id="resultado"></div>
 
     <script>
-        function processarImagem() {
-            var input = document.getElementById('inputImage');
-            var file = input.files[0];
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
 
-            if (file) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    var img = new Image();
-                    img.onload = function () {
-                        var canvas = document.createElement('canvas');
-                        canvas.width = this.width;
-                        canvas.height = this.height;
-                        var ctx = canvas.getContext('2d');
-                        ctx.drawImage(this, 0, 0);
-
-                        var imageData = canvas.toDataURL('image/jpeg');
-                        enviarParaAPI(imageData);
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function enviarParaAPI(imageData) {
-            // Simulação de uma requisição assíncrona
-            setTimeout(function() {
-                // Simulação de uma resposta da API
-                var resultados = {
-                    objetos_detectados: ['cachorro', 'gato', 'árvore']
-                };
-
-                exibirResultados(resultados);
-            }, 1000);
-        }
-
-        function exibirResultados(resultados) {
-            // Aqui você pode processar os resultados recebidos da API e exibi-los na página
-            var outputDiv = document.getElementById('output');
-            outputDiv.innerHTML = '<h2>Resultados:</h2>';
-            outputDiv.innerHTML += '<pre>' + JSON.stringify(resultados, null, 2) + '</pre>';
-        }
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('resultado').innerHTML = 'Classe prevista: ' + data.classname;
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                document.getElementById('resultado').innerHTML = 'Ocorreu um erro ao processar sua imagem.';
+            });
+        });
     </script>
 </body>
 </html>
+
 
