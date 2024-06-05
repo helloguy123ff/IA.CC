@@ -1,0 +1,7 @@
+project_directory/
+│
+├── app.py
+├── templates/
+│   └── index.html
+└── static/
+    └── styles.css
