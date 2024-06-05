@@ -1,0 +1,29 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+form {
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    max-width: 300px;
+}
+
+label, input, button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+}
+
+#resultado img {
+    margin-top: 20px;
+    max-width: 100%;
+    height: auto;
+}
