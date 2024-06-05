@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA de Imagens</title>
+</head>
+<body>
+    <h1>IA de Imagens</h1>
+    <input type="file" id="inputImage" accept="image/*">
+    <button onclick="processarImagem()">Processar Imagem</button>
+    <div id="output"></div>
+
+    <script>
+        function processarImagem() {
+            var input = document.getElementById('inputImage');
+            var file = input.files[0];
+
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var img = new Image();
+                    img.onload = function () {
+                        var canvas = document.createElement('canvas');
+                        canvas.width = this.width;
+                        canvas.height = this.height;
+                        var ctx = canvas.getContext('2d');
+                        ctx.drawImage(this, 0, 0);
+
+                        var imageData = canvas.toDataURL('image/jpeg');
+                        enviarParaAPI(imageData);
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function enviarParaAPI(imageData) {
+            // Aqui você deve implementar a lógica para enviar a imagem para uma API de reconhecimento de imagem
+            // e receber os resultados de volta. Isso pode ser feito usando XMLHttpRequest ou fetch.
+
+            // Exemplo de como você poderia enviar a imagem para uma API fictícia:
+            fetch('https://sua-api-de-reconhecimento-de-imagem.com/processar', {
+                method: 'POST',
+                body: JSON.stringify({ image: imageData }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => exibirResultados(data))
+            .catch(error => console.error('Erro:', error));
+        }
+
+        function exibirResultados(resultados) {
+            // Aqui você pode processar os resultados recebidos da API e exibi-los na página
+            var outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = '<h2>Resultados:</h2>';
+            outputDiv.innerHTML += '<pre>' + JSON.stringify(resultados, null, 2) + '</pre>';
+        }
+    </script>
+</body>
+</html>
