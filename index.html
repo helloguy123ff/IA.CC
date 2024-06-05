@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IA de Imagens</title>
+    <title>IA.CC</title>
 </head>
 <body>
     <h1>IA de Imagens</h1>
@@ -37,20 +37,15 @@
         }
 
         function enviarParaAPI(imageData) {
-            // Aqui você deve implementar a lógica para enviar a imagem para uma API de reconhecimento de imagem
-            // e receber os resultados de volta. Isso pode ser feito usando XMLHttpRequest ou fetch.
+            // Simulação de uma requisição assíncrona
+            setTimeout(function() {
+                // Simulação de uma resposta da API
+                var resultados = {
+                    objetos_detectados: ['cachorro', 'gato', 'árvore']
+                };
 
-            // Exemplo de como você poderia enviar a imagem para uma API fictícia:
-            fetch('https://sua-api-de-reconhecimento-de-imagem.com/processar', {
-                method: 'POST',
-                body: JSON.stringify({ image: imageData }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => exibirResultados(data))
-            .catch(error => console.error('Erro:', error));
+                exibirResultados(resultados);
+            }, 1000);
         }
 
         function exibirResultados(resultados) {
@@ -62,3 +57,4 @@
     </script>
 </body>
 </html>
+
